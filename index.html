@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Follicle & Form — Hair Restoration Clinic</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F5F0E8;
+    --dark: #0E0C09;
+    --gold: #B8995A;
+    --gold-light: #D4B97A;
+    --warm-white: #FAF7F2;
+    --muted: #8A8070;
+    --border: rgba(184,153,90,0.2);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(14,12,9,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+
+  .nav-logo span { font-style: italic; color: var(--cream); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .nav-cta {
+    border: 1px solid var(--gold);
+    color: var(--gold-light) !important;
+    padding: 0.5rem 1.4rem;
+    border-radius: 0;
+    transition: background 0.3s, color 0.3s !important;
+  }
+
+  .nav-cta:hover { background: var(--gold) !important; color: var(--dark) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 6rem 6rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-eyebrow span {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 380px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--dark);
+    text-decoration: none;
+    padding: 0.9rem 2.2rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-ghost {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: color 0.3s;
+  }
+
+  .btn-ghost::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+
+  .btn-ghost:hover { color: var(--gold-light); }
+  .btn-ghost:hover::after { transform: translateX(4px); }
+
+  /* Stats strip */
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .stat-item {}
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* Hero right — image panel */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, var(--dark) 0%, transparent 30%),
+      linear-gradient(135deg, #1a1510 0%, #0a0806 100%);
+  }
+
+  /* Decorative hair strand SVG lines */
+  .hero-decor {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .hero-decor svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+  }
+
+  /* Floating card */
+  .hero-card {
+    position: absolute;
+    bottom: 8rem;
+    left: -2rem;
+    background: rgba(30,26,20,0.9);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem 1.8rem;
+    width: 240px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+
+  .hero-card-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+
+  .hero-card-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-card-sub {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* Gold accent circle */
+  .hero-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,153,90,0.08);
+    animation: pulse 6s ease-in-out infinite;
+  }
+
+  .hero-circle::before {
+    content: '';
+    position: absolute;
+    inset: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,153,90,0.06);
+    animation: pulse 6s ease-in-out 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.04); opacity: 0.6; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Portrait placeholder */
+  .portrait-frame {
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    width: 340px;
+    height: 480px;
+    overflow: hidden;
+  }
+
+  .portrait-inner {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, #2a221a 0%, #151008 60%, #0E0C09 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .portrait-icon {
+    opacity: 0.12;
+  }
+
+  .portrait-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, var(--dark), transparent);
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+    overflow: hidden;
+    background: rgba(184,153,90,0.03);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 2.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .marquee-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 7rem 6rem; }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-label span {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading em { font-style: italic; color: var(--gold-light); }
+
+  /* ── ABOUT / WHY ── */
+  .why-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+
+  .why-text p {
+    color: var(--muted);
+    line-height: 1.9;
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .why-pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .pillar {
+    padding: 1.8rem;
+    border: 1px solid var(--border);
+    background: rgba(184,153,90,0.02);
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+  }
+
+  .pillar:hover {
+    border-color: rgba(184,153,90,0.4);
+    background: rgba(184,153,90,0.05);
+  }
+
+  .pillar-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--border);
+    font-weight: 300;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .pillar h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+  }
+
+  .pillar p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── TREATMENTS ── */
+  .treatments-section {
+    background: rgba(255,255,255,0.01);
+    border-top: 1px solid var(--border);
+  }
+
+  .treatments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+
+  .treatments-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+  }
+
+  .treatment-card {
+    background: var(--dark);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+    cursor: default;
+  }
+
+  .treatment-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .treatment-card:hover { background: rgba(30,24,16,1); }
+  .treatment-card:hover::before { transform: scaleX(1); }
+
+  .treatment-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .treatment-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .treatment-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .treatment-detail {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: gap 0.3s;
+  }
+
+  .treatment-detail::after { content: '→'; }
+  .treatment-card:hover .treatment-detail { gap: 1rem; }
+
+  /* ── PROCESS ── */
+  .process-section {
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .process-header { margin-bottom: 4rem; }
+
+  .process-timeline {
+    display: flex;
+    position: relative;
+    gap: 0;
+  }
+
+  .process-timeline::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .process-step {
+    flex: 1;
+    padding: 0 1.5rem 0 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-dot {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--dark);
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+  }
+
+  .step-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-section {
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(184,153,90,0.03) 0%, transparent 100%);
+  }
+
+  .testimonials-header { margin-bottom: 3.5rem; }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .testi-card {
+    padding: 2rem 2.2rem;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.01);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  .testi-card:hover { border-color: rgba(184,153,90,0.35); }
+
+  .testi-card::before {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: var(--gold);
+    opacity: 0.12;
+    position: absolute;
+    top: -0.8rem;
+    left: 1.5rem;
+    line-height: 1;
+  }
+
+  .stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 1rem;
+  }
+
+  .star {
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .testi-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .testi-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold) 0%, #6b4f2a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--dark);
+    font-weight: 500;
+  }
+
+  .testi-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--cream);
+  }
+
+  .testi-location {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 8rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(184,153,90,0.06) 0%, transparent 70%);
+  }
+
+  .cta-section .section-label { justify-content: center; }
+  .cta-section .section-label::before { display: none; }
+  .cta-section .section-label::after {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin: 1.5rem auto 2rem;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-title em { font-style: italic; color: var(--gold-light); }
+
+  .cta-sub {
+    font-size: 0.92rem;
+    color: var(--muted);
+    max-width: 440px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 6rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    background: rgba(0,0,0,0.3);
+  }
+
+  .footer-brand .nav-logo {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 240px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .footer-col a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.3s;
+  }
+
+  .footer-col a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+  }
+
+  .footer-bottom p {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 8rem 2rem 4rem; }
+    section { padding: 5rem 2rem; }
+    .why-section { grid-template-columns: 1fr; gap: 3rem; }
+    .treatments-grid { grid-template-columns: 1fr; }
+    .process-timeline { flex-direction: column; gap: 2rem; }
+    .process-timeline::before { display: none; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 3rem 2rem; }
+    .footer-bottom { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .cta-section { padding: 6rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Follicle <span>&</span> Form</div>
+  <ul class="nav-links">
+    <li><a href="#treatments">Treatments</a></li>
+    <li><a href="#process">Our Process</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Consultation</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span>Award-Winning Hair Restoration</span>
+    </div>
+
+    <h1 class="hero-title">
+      Restore What<br>
+      Was <em>Always</em><br>
+      Yours
+    </h1>
+
+    <p class="hero-subtitle">
+      Precision hair transplantation where surgical artistry meets advanced science. Natural results crafted to complement your unique anatomy.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book Consultation</a>
+      <a href="#process" class="btn-ghost">See Our Process</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">4,800+</div>
+        <div class="stat-label">Procedures</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">97%</div>
+        <div class="stat-label">Graft Survival</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">18yr</div>
+        <div class="stat-label">Experience</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-bg"></div>
+    <div class="hero-decor">
+      <svg viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#B8995A"/>
+            <stop offset="100%" style="stop-color:#6b4f2a"/>
+          </linearGradient>
+        </defs>
+        <!-- Abstract hair strand lines -->
+        <path d="M 120 -20 Q 200 200 150 400 Q 100 600 180 820" stroke="url(#hairGrad)" stroke-width="1.2" fill="none"/>
+        <path d="M 180 -20 Q 250 150 220 380 Q 190 550 250 820" stroke="url(#hairGrad)" stroke-width="0.8" fill="none"/>
+        <path d="M 240 -20 Q 180 180 200 420 Q 220 620 170 820" stroke="url(#hairGrad)" stroke-width="1" fill="none"/>
+        <path d="M 300 -20 Q 380 200 320 450 Q 280 650 350 820" stroke="url(#hairGrad)" stroke-width="0.6" fill="none"/>
+        <path d="M 360 -20 Q 280 160 340 400 Q 390 580 310 820" stroke="url(#hairGrad)" stroke-width="1.2" fill="none"/>
+        <path d="M 420 -20 Q 480 200 440 420 Q 400 620 460 820" stroke="url(#hairGrad)" stroke-width="0.9" fill="none"/>
+        <path d="M 480 -20 Q 380 180 420 380 Q 460 560 400 820" stroke="url(#hairGrad)" stroke-width="0.7" fill="none"/>
+        <path d="M 540 -20 Q 480 220 510 450 Q 540 650 490 820" stroke="url(#hairGrad)" stroke-width="1" fill="none"/>
+        <path d="M 80 -20 Q 100 300 60 500 Q 20 700 90 820" stroke="url(#hairGrad)" stroke-width="0.5" fill="none"/>
+        <path d="M 580 -20 Q 520 250 570 480 Q 600 680 550 820" stroke="url(#hairGrad)" stroke-width="0.8" fill="none"/>
+      </svg>
+    </div>
+
+    <div class="hero-circle"></div>
+
+    <div class="portrait-frame">
+      <div class="portrait-inner">
+        <svg class="portrait-icon" width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="40" r="28" stroke="#B8995A" stroke-width="1.5"/>
+          <path d="M 10 120 Q 60 75 110 120" stroke="#B8995A" stroke-width="1.5" fill="none"/>
+          <path d="M 35 32 Q 60 20 85 32" stroke="#B8995A" stroke-width="1.5" fill="none"/>
+          <path d="M 35 28 Q 60 14 85 28" stroke="#B8995A" stroke-width="1" fill="none" stroke-dasharray="2 4"/>
+        </svg>
+        <div class="portrait-overlay"></div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-label">Avg. Graft Yield</div>
+      <div class="hero-card-value">3,200</div>
+      <div class="hero-card-sub">grafts per session</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="marquee-dot"></span> FUE Hair Transplant</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> DHI / Choi Pen</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Beard & Eyebrow Restoration</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> PRP Therapy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Scalp Micropigmentation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Hairline Design</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Female Hair Loss</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> FUE Hair Transplant</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> DHI / Choi Pen</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Beard & Eyebrow Restoration</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> PRP Therapy</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Scalp Micropigmentation</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Hairline Design</div>
+    <div class="marquee-item"><span class="marquee-dot"></span> Female Hair Loss</div>
+  </div>
+</div>
+
+<!-- WHY -->
+<section id="about">
+  <div class="why-section">
+    <div class="why-text">
+      <div class="section-label reveal"><span>Why Follicle & Form</span></div>
+      <h2 class="section-heading reveal reveal-delay-1">
+        The <em>Craft</em> Behind<br>Every Graft
+      </h2>
+      <p class="reveal reveal-delay-2">
+        Hair restoration is more than a procedure — it's an art form. Our board-certified surgeons combine 18 years of clinical expertise with an obsessive attention to aesthetic detail, ensuring every hairline we craft looks undeniably natural.
+      </p>
+      <p class="reveal reveal-delay-2">
+        Using the latest motorised FUE and DHI techniques, we achieve minimal scarring, accelerated healing, and graft survival rates that consistently exceed the industry standard.
+      </p>
+    </div>
+
+    <div class="why-pillars">
+      <div class="pillar reveal">
+        <div class="pillar-num">01</div>
+        <h3>Zero-Scalpel FUE</h3>
+        <p>Micro-punch extraction leaves no linear scar and allows rapid recovery.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-1">
+        <div class="pillar-num">02</div>
+        <h3>Artistic Hairline</h3>
+        <p>Custom-designed for your facial structure, age, and hair characteristics.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-2">
+        <div class="pillar-num">03</div>
+        <h3>Sapphire Channels</h3>
+        <p>Sapphire blade implantation for denser, more natural-looking results.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-3">
+        <div class="pillar-num">04</div>
+        <h3>Lifetime Support</h3>
+        <p>Complimentary follow-up care and personalised maintenance plans.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TREATMENTS -->
+<section id="treatments" class="treatments-section">
+  <div class="treatments-header">
+    <div>
+      <div class="section-label reveal"><span>Procedures</span></div>
+      <h2 class="section-heading reveal reveal-delay-1">Our <em>Treatments</em></h2>
+    </div>
+    <a href="#contact" class="btn-ghost reveal" style="color: var(--muted);">See all treatments</a>
+  </div>
+
+  <div class="treatments-grid">
+    <div class="treatment-card reveal">
+      <div class="treatment-tag">Most Popular</div>
+      <div class="treatment-name">FUE Hair<br>Transplant</div>
+      <p class="treatment-desc">The gold standard in follicular extraction. Individual follicles harvested one-by-one for a completely natural, scar-free result with rapid healing.</p>
+      <a href="#contact" class="treatment-detail">Learn More</a>
+    </div>
+    <div class="treatment-card reveal reveal-delay-1">
+      <div class="treatment-tag">Advanced</div>
+      <div class="treatment-name">DHI Direct<br>Implant</div>
+      <p class="treatment-desc">Utilising the Choi implanter pen for direct implantation without channel incisions, delivering superior density and angle precision.</p>
+      <a href="#contact" class="treatment-detail">Learn More</a>
+    </div>
+    <div class="treatment-card reveal reveal-delay-2">
+      <div class="treatment-tag">Specialised</div>
+      <div class="treatment-name">Beard & Brow<br>Restoration</div>
+      <p class="treatment-desc">Precision follicular implantation to restore or enhance beard density, eyebrow fullness, and other facial hair with natural-looking results.</p>
+      <a href="#contact" class="treatment-detail">Learn More</a>
+    </div>
+    <div class="treatment-card reveal">
+      <div class="treatment-tag">Non-Surgical</div>
+      <div class="treatment-name">PRP Hair<br>Therapy</div>
+      <p class="treatment-desc">Platelet-rich plasma injections stimulate dormant follicles, ideal as a standalone treatment or to accelerate transplant recovery.</p>
+      <a href="#contact" class="treatment-detail">Learn More</a>
+    </div>
+    <div class="treatment-card reveal reveal-delay-1">
+      <div class="treatment-tag">Aesthetic</div>
+      <div class="treatment-name">Scalp Micro-<br>pigmentation</div>
+      <p class="treatment-desc">Precisely applied pigments replicate natural hair follicles, creating the appearance of a fuller head of hair or defined shaved look.</p>
+      <a href="#contact" class="treatment-detail">Learn More</a>
+    </div>
+    <div class="treatment-card reveal reveal-delay-2">
+      <div class="treatment-tag">For Women</div>
+      <div class="treatment-name">Female Hair<br>Restoration</div>
+      <p class="treatment-desc">Specialist protocols for diffuse thinning, traction alopecia, and pattern baldness in women. Tailored solutions for every cause.</p>
+      <a href="#contact" class="treatment-detail">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="process-section">
+  <div class="process-header">
+    <div class="section-label reveal"><span>How It Works</span></div>
+    <h2 class="section-heading reveal reveal-delay-1">Your Journey to <em>Restoration</em></h2>
+  </div>
+
+  <div class="process-timeline">
+    <div class="process-step reveal">
+      <div class="step-dot">01</div>
+      <div class="step-title">Free Consultation</div>
+      <p class="step-desc">A thorough assessment of your hair loss stage, donor density, and personal goals. No obligation, complete transparency.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="step-dot">02</div>
+      <div class="step-title">Bespoke Treatment Plan</div>
+      <p class="step-desc">Your surgeon crafts a custom plan including graft count, hairline design, and the optimal technique for your anatomy.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="step-dot">03</div>
+      <div class="step-title">Procedure Day</div>
+      <p class="step-desc">Performed under local anaesthesia in our state-of-the-art theatre. Most patients are relaxed and comfortable throughout.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="step-dot">04</div>
+      <div class="step-title">Recovery & Growth</div>
+      <p class="step-desc">Initial shedding is normal. Visible results emerge from month 4, with full density achieved by month 12–18.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-4">
+      <div class="step-dot">05</div>
+      <div class="step-title">Lifetime Aftercare</div>
+      <p class="step-desc">Ongoing follow-ups, a dedicated patient portal, and complementary PRP sessions to protect your long-term results.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="results" class="testimonials-section">
+  <div class="testimonials-header">
+    <div class="section-label reveal"><span>Patient Stories</span></div>
+    <h2 class="section-heading reveal reveal-delay-1">Real <em>Transformations</em></h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testi-card reveal">
+      <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">After years of hiding under hats, I finally have my confidence back. The hairline they designed looks completely natural — nobody believes I had a transplant.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RK</div>
+        <div>
+          <div class="testi-name">Rahul K.</div>
+          <div class="testi-location">Mumbai · FUE, 2,800 grafts</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">The consultation was honest and thorough. They explained exactly what to expect and delivered on every promise. At 14 months the density is incredible.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AS</div>
+        <div>
+          <div class="testi-name">Arjun S.</div>
+          <div class="testi-location">Delhi · DHI, 3,400 grafts</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-text">As a woman, I was nervous about discussing my hair loss. The team was discreet, compassionate, and the results have genuinely changed my life.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">PM</div>
+        <div>
+          <div class="testi-name">Priya M.</div>
+          <div class="testi-location">Bangalore · Female FUE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <div class="cta-bg"></div>
+  <div class="section-label reveal"><span>Begin Your Journey</span></div>
+  <h2 class="cta-title reveal reveal-delay-1">
+    Your <em>Confidence</em><br>Starts Here
+  </h2>
+  <p class="cta-sub reveal reveal-delay-2">
+    Book a complimentary consultation with our specialist. We'll assess your hair, answer every question, and outline a transparent plan — with no pressure.
+  </p>
+  <div class="cta-actions reveal reveal-delay-3">
+    <a href="tel:+919999999999" class="btn-primary">Call +91 99999 99999</a>
+    <a href="mailto:hello@follicleform.com" class="btn-ghost">Email Us</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="nav-logo">Follicle <span>&</span> Form</div>
+    <p>A premium hair restoration clinic committed to natural results and patient confidence.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Treatments</h4>
+    <ul>
+      <li><a href="#">FUE Transplant</a></li>
+      <li><a href="#">DHI Method</a></li>
+      <li><a href="#">PRP Therapy</a></li>
+      <li><a href="#">Female Restoration</a></li>
+      <li><a href="#">Scalp Micropigmentation</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Clinic</h4>
+    <ul>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Our Surgeons</a></li>
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Patient Gallery</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <ul>
+      <li><a href="#">Book Consultation</a></li>
+      <li><a href="#">+91 99999 99999</a></li>
+      <li><a href="#">hello@follicleform.com</a></li>
+      <li><a href="#">Connaught Place, Delhi</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2026 Follicle & Form Hair Restoration. All rights reserved.</p>
+  <p>Privacy Policy · Terms of Service · Medical Disclaimer</p>
+</div>
+
+<script>
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      nav.style.background = 'rgba(14,12,9,0.97)';
+      nav.style.boxShadow = '0 1px 0 rgba(184,153,90,0.15)';
+    } else {
+      nav.style.background = 'linear-gradient(to bottom, rgba(14,12,9,0.95) 0%, transparent 100%)';
+      nav.style.boxShadow = 'none';
+    }
+  });
+</script>
+</body>
+</html>
